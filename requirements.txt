@@ -1,0 +1,8 @@
+# Local environment for running the Gradio app (python app/app.py).
+# Training happens on Kaggle, which already has everything the notebook needs.
+torch>=2.4
+torchvision>=0.19
+gradio>=6.0,<7
+numpy
+pillow>=10.1
+matplotlib>=3.6

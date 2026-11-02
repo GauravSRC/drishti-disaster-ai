@@ -1,0 +1,22 @@
+# Python / environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# Raw data and Kaggle download (never commit the dataset)
+data/
+AIDER/
+*.zip
+
+# Gradio / editors / OS
+.gradio/
+flagged/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# NOTE: app/model/drishti_model.pt (~16-21 MB) IS committed on purpose so the repo runs out of the box.
