@@ -1,15 +1,11 @@
-# 🛰️ Drishti — Explainable Drone-Based Disaster Recognition
-
-**EC-422 Artificial Intelligence · IIT (BHU) Varanasi** · Team: *Name 1 (roll no.)*, *Name 2 (roll no.)*
-
-**Live demo:** `https://huggingface.co/spaces/<hf-username>/drishti` · **Training notebook:** [`notebooks/drishti_train_kaggle.ipynb`](notebooks/drishti_train_kaggle.ipynb)
+# 🛰️ Drishti--Explainable Drone-Based Disaster Recognition
 
 After a flood, fire or building collapse, emergency teams need to know *which areas are hit* — fast. A drone can photograph a whole district in minutes, but someone still has to look at thousands of frames.
 **Drishti** (दृष्टि, "vision") is a deep-learning model that labels each aerial frame as **collapsed building, fire / smoke, flood, traffic accident** or **normal**, shows **where** it looked, suggests a **response**, and hands **uncertain** frames to a human analyst.
 
 | Problem area | Approach | Deployment |
 |---|---|---|
-| Disaster management (course theme) | Transfer learning with CNNs (PyTorch) on the AIDER aerial dataset | Gradio web app on Hugging Face Spaces (free CPU) |
+| Disaster management (course theme) | Transfer learning with CNNs (PyTorch) on the AIDER aerial dataset | Gradio web app on Hugging Face Spaces  |
 
 ## Features
 
@@ -61,7 +57,7 @@ drishti-disaster-ai/
 ├── app/                                   # exactly what is uploaded to the Hugging Face Space
 │   ├── app.py                             # Gradio UI (analyze, area scan, about)
 │   ├── drishti_core.py                    # model loading, calibrated prediction, Grad-CAM, tiling, alerts
-│   ├── requirements.txt                   # CPU-only torch for the Space
+│   ├── requirements.txt                   #  torch for the Space
 │   ├── README.md                          # Space configuration (sdk: gradio)
 │   ├── model/drishti_model.pt             # trained weights (from Kaggle)
 │   └── examples/                          # sample test images for the demo
