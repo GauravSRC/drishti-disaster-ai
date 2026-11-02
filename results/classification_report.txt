@@ -1,0 +1,13 @@
+Model: efficientnet_b0
+
+                    precision    recall  f1-score   support
+
+Collapsed building      0.973     0.948     0.961        77
+      Fire / smoke      0.987     0.949     0.967        78
+             Flood      1.000     0.949     0.974        79
+            Normal      0.988     0.994     0.991       654
+  Traffic accident      0.883     0.944     0.913        72
+
+          accuracy                          0.979       960
+         macro avg      0.966     0.957     0.961       960
+      weighted avg      0.980     0.979     0.979       960

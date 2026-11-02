@@ -27,8 +27,8 @@ After a flood, fire or building collapse, emergency teams need to know *which ar
 
 | Model | Params (M) | Size (MB) | CPU latency (ms) | Test accuracy | Test macro-F1 |
 |---|---|---|---|---|---|
-| MobileNetV3-Large | – | – | – | – | – |
-| EfficientNet-B0 | – | – | – | – | – |
+| MobileNetV3-Large | 4.2084     | 17.0232 | 21.6501 | 0.9792 | 0.9679 |
+| EfficientNet-B0 | 4.0140 | 16.3331 | 29.2843 | 0.9792 | 0.9611 |
 
 | Confusion matrix | Grad-CAM |
 |---|---|

@@ -1,0 +1,96 @@
+{
+  "config": {
+    "seed": 42,
+    "cache_size": 256,
+    "img_size": 224,
+    "batch_size": 32,
+    "backbones": [
+      "mobilenet_v3_large",
+      "efficientnet_b0"
+    ],
+    "pretrained": true,
+    "head_epochs": 3,
+    "finetune_epochs": 15,
+    "lr_head": 0.001,
+    "lr_finetune": 0.0003,
+    "weight_decay": 0.0001,
+    "label_smoothing": 0.1,
+    "patience": 5,
+    "val_size": 0.15,
+    "test_size": 0.15,
+    "uncertainty_threshold": 0.6,
+    "num_workers": 4
+  },
+  "comparison": [
+    {
+      "model": "mobilenet_v3_large",
+      "params (M)": 4.2084,
+      "size (MB)": 17.0232,
+      "CPU latency (ms, 2 threads)": 21.6501,
+      "val macro-F1": 0.9628,
+      "test accuracy": 0.9792,
+      "test macro-F1": 0.9679,
+      "test macro-F1 + TTA": 0.964,
+      "train time (min)": 3.2782
+    },
+    {
+      "model": "efficientnet_b0",
+      "params (M)": 4.014,
+      "size (MB)": 16.3331,
+      "CPU latency (ms, 2 threads)": 29.2843,
+      "val macro-F1": 0.9685,
+      "test accuracy": 0.9792,
+      "test macro-F1": 0.9611,
+      "test macro-F1 + TTA": 0.9566,
+      "train time (min)": 4.3553
+    }
+  ],
+  "selected_model": "efficientnet_b0",
+  "test": {
+    "acc": 0.9791666666666666,
+    "macro_f1": 0.961095577528458,
+    "weighted_f1": 0.9792666376503065
+  },
+  "test_tta": {
+    "acc": 0.9760416666666667,
+    "macro_f1": 0.9566022829315332,
+    "weighted_f1": 0.9761166882658671
+  },
+  "per_class_recall": {
+    "collapsed_building": 0.948051948051948,
+    "fire": 0.9487179487179487,
+    "flooded_areas": 0.9493670886075949,
+    "normal": 0.9938837920489296,
+    "traffic_incident": 0.9444444444444444
+  },
+  "per_class_f1": {
+    "collapsed_building": 0.9605263157894737,
+    "fire": 0.9673202614379085,
+    "flooded_areas": 0.974025974025974,
+    "normal": 0.9908536585365854,
+    "traffic_incident": 0.912751677852349
+  },
+  "calibration": {
+    "temperature": 0.4752342998981476,
+    "ece_before": 0.14882443845272064,
+    "ece_after": 0.010235513560473919,
+    "threshold": 0.6,
+    "auto_handled_share": 0.9937499761581421,
+    "accuracy_auto_handled": 0.9821802973747253,
+    "accuracy_all": 0.9791666865348816
+  },
+  "data": {
+    "cleaning": {
+      "files_found": 6433,
+      "unreadable": 0,
+      "near_duplicates_removed": 33,
+      "label_conflicts_removed": 4,
+      "images_kept": 6396
+    },
+    "split_sizes": {
+      "train": 4476,
+      "val": 960,
+      "test": 960
+    }
+  }
+}
