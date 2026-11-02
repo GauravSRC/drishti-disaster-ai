@@ -213,8 +213,8 @@ def alert_card_html(engine: DrishtiEngine, probs: np.ndarray) -> str:
 <div style="border-left:10px solid {color};background:#ffffff;color:#1f2937;padding:14px 18px;
             border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,.15);font-family:system-ui,sans-serif">
   <div style="font-size:12px;letter-spacing:.09em;font-weight:700;color:{color}">{html.escape(status)}</div>
-  <div style="font-size:24px;font-weight:700;margin:2px 0 6px">{html.escape(title)}</div>
-  <div style="font-size:15px;line-height:1.45">{html.escape(action)}</div>
+  <div style="font-size:24px;font-weight:700;margin:2px 0 6px;color:#111827">{html.escape(title)}</div>
+  <div style="font-size:15px;line-height:1.45;color:#111827">{html.escape(action)}</div>
   <div style="font-size:12px;color:#6b7280;margin-top:10px">Calibrated confidence {p:.1%} ·
        model {html.escape(engine.arch)} · alert threshold {engine.threshold:.0%}</div>
 </div>"""
