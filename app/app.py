@@ -5,6 +5,14 @@ Run locally:   python app.py        ->  http://127.0.0.1:7860
 import os
 from pathlib import Path
 
+try:
+    import spaces          # Hugging Face ZeroGPU support (imported before torch)
+except ImportError:        # running locally without the `spaces` package: make @spaces.GPU a no-op
+    class spaces:
+        @staticmethod
+        def GPU(fn=None, **_kwargs):
+            return fn if callable(fn) else (lambda f: f)
+
 import gradio as gr
 from PIL import ImageOps
 
@@ -40,20 +48,30 @@ def _prepare(img):
     return ImageOps.exif_transpose(img).convert("RGB")
 
 
+# Only the model calls run on the GPU (ZeroGPU attaches a GPU just for the duration of these functions).
+@spaces.GPU(duration=20)
+def _classify_on_gpu(img, explain):
+    if explain:
+        return ENGINE.gradcam(img)            # (cam, probs)
+    return None, ENGINE.predict(img)
+
+
+@spaces.GPU(duration=20)
+def _scan_on_gpu(img, grid):
+    return ENGINE.scan(img, grid)             # (boxes, probs)
+
+
 def analyze(img, explain):
     img = _prepare(img)
-    if explain:
-        cam, probs = ENGINE.gradcam(img)
-        heatmap = overlay_heatmap(img, cam)
-    else:
-        probs, heatmap = ENGINE.predict(img), None
+    cam, probs = _classify_on_gpu(img, explain)
+    heatmap = overlay_heatmap(img, cam) if cam is not None else None
     scores = {ENGINE.display[c]: float(p) for c, p in zip(ENGINE.classes, probs)}
     return alert_card_html(ENGINE, probs), scores, heatmap
 
 
 def area_scan(img, grid):
     img = _prepare(img)
-    boxes, probs = ENGINE.scan(img, int(grid))
+    boxes, probs = _scan_on_gpu(img, int(grid))
     return draw_scan(ENGINE, img, boxes, probs), scan_report_markdown(ENGINE, probs)
 
 

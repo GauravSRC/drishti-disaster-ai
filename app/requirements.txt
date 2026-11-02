@@ -1,7 +1,7 @@
-# CPU-only PyTorch wheels (much smaller than the default CUDA build; the Space has no GPU)
---extra-index-url https://download.pytorch.org/whl/cpu
-torch>=2.4
-torchvision>=0.19
+# Space hardware = ZeroGPU: needs the normal (CUDA) PyTorch build in a version ZeroGPU supports (2.8 - 2.13)
+torch==2.13.0
+torchvision==0.28.0
+spaces
 numpy
 pillow>=10.1
 matplotlib>=3.6

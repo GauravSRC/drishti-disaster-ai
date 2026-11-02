@@ -82,6 +82,10 @@ class DrishtiEngine:
         self.model = build_model(self.arch, len(self.classes))
         self.model.load_state_dict(ckpt["state_dict"])
         self.model.eval()
+        # GPU if available. On a ZeroGPU Space the model must be put on "cuda" at startup (it is emulated
+        # until a @spaces.GPU function runs); locally without a GPU everything stays on the CPU.
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
         self.cam_layer = self.model.features[-1]
         self.transform = T.Compose([T.Resize((self.img_size, self.img_size)), T.ToTensor(),
                                     T.Normalize(ckpt["mean"], ckpt["std"])])
@@ -100,11 +104,12 @@ class DrishtiEngine:
     def predict(self, img: Image.Image) -> np.ndarray:
         """Calibrated class probabilities, shape (num_classes,)."""
         with self._lock, torch.inference_mode():
-            return self._calibrated(self.model(self._tensor(img).unsqueeze(0)))[0].numpy()
+            x = self._tensor(img).unsqueeze(0).to(self.device)
+            return self._calibrated(self.model(x))[0].cpu().numpy()
 
     def gradcam(self, img: Image.Image, class_idx: int | None = None):
         """Returns (cam, probs): cam is a low-resolution map in [0, 1] for the predicted (or given) class."""
-        x = self._tensor(img).unsqueeze(0).requires_grad_(True)
+        x = self._tensor(img).unsqueeze(0).to(self.device).requires_grad_(True)
         store = {}
 
         def hook(_module, _inputs, out):
@@ -125,15 +130,15 @@ class DrishtiEngine:
         weights = store["grad"].mean(dim=(2, 3), keepdim=True)
         cam = F.relu((weights * store["act"]).sum(1))[0].detach()
         cam = (cam - cam.min()) / (cam.max() - cam.min() + 1e-8)
-        return cam.numpy(), self._calibrated(logits.detach())[0].numpy()
+        return cam.cpu().numpy(), self._calibrated(logits.detach())[0].cpu().numpy()
 
     def scan(self, img: Image.Image, grid: int = 4):
         """Area scan: classify grid x grid tiles in one batch. Returns (boxes, probs[n_tiles, n_classes])."""
         img = img.convert("RGB")
         boxes = tile_boxes(*img.size, grid)
         with self._lock, torch.inference_mode():
-            x = torch.stack([self._tensor(img.crop(b)) for b in boxes])
-            probs = self._calibrated(self.model(x)).numpy()
+            x = torch.stack([self._tensor(img.crop(b)) for b in boxes]).to(self.device)
+            probs = self._calibrated(self.model(x)).cpu().numpy()
         return boxes, probs
 
 
